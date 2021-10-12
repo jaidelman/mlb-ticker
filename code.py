@@ -171,12 +171,33 @@ def showInning(game):
         outs = ""
         for i in range (0, game["outs"]):
             outs += "X"
-
         matrixportal.set_text(outs, 9)
-
-        first = "x" if game["first"] else "o"
-        second = "x" if game["second"] else "o"
-        third = "x" if game["third"] else "o"
+        
+        battingColor = game["awayColors"]["primary"] if game["isTopInning"] else game["homeColors"]["alt"]
+        
+        # Set colour and status of first base
+        if game["first"]:
+            matrixportal.set_text_color(battingColor, 10)
+            first = "x" 
+        else:
+            matrixportal.set_text_color("0xFFC72C", 10)
+            first = "-"
+        
+        # Set colour and status of second base
+        if game["second"]:
+            matrixportal.set_text_color(battingColor, 11)
+            second = "x" 
+        else:
+            matrixportal.set_text_color("0xFFC72C", 11)
+            second = "-"
+            
+        # Set colour and status of third base
+        if game["third"]:
+            matrixportal.set_text_color(battingColor, 12)
+            third = "x" 
+        else:
+            matrixportal.set_text_color("0xFFC72C", 12)
+            third = "-"
 
         matrixportal.set_text(first, 10)
         matrixportal.set_text(second, 11)
