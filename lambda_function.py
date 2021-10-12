@@ -1,9 +1,10 @@
 import json
 import requests
 import teamColors
-# import time
-# import dateutil.parser
-# from datetime import date
+import time
+import dateutil.parser
+from dateutil import tz
+from datetime import date
 
 
 def lambda_handler(event, context):
@@ -59,25 +60,21 @@ def lambda_handler(event, context):
                 'homeColors': homeColors
             }
         else:
-            # startTime = dateutil.parser.parse(game['profile']['dateTimeEt'])
+            startTime = dateutil.parser.parse(game['gameDate']).astimezone(tz.gettz('America/New_York')).strftime("%I:%M %p")
 
             obj = {
                 'awayAbbr': awayAbbr,
                 'homeAbbr': homeAbbr,
                 'awayColors': awayColors,
                 'homeColors': homeColors,
-                # 'startTime': startTime
+                'startTime': startTime
             }
 
         games.append(obj)
 
     payload['payload'] = games
 
-    # TODO implement
     return {
         'statusCode': 200,
         'body': payload
     }
-
-
-lambda_handler(None, None)
