@@ -35,7 +35,7 @@ matrixportal = MatrixPortal(
 
 # --- (X,Y) related constants --- #
 
-X_SCORE_SHIFT = 2
+X_SCORE_SHIFT = 3
 TEAM_ONE_X = 32
 TEAM_ONE_SHADOW_X = TEAM_ONE_X + 1
 TEAM_TWO_X = 49
@@ -96,12 +96,6 @@ matrixportal.add_text(
     text_position=(TEAM_TWO_X, TOP_ROW_HEIGHT)
 )
 
-# Time
-matrixportal.add_text(
-    text_font=FONT,
-    text_position=(TEAM_ONE_X, BOTTOM_ROW_HEIGHT),
-)
-
 # --- Functions --- #
 
 # Gets the scores from our API and stores them in a data object
@@ -152,7 +146,7 @@ def setScore(game):
     matrixportal.set_text_color(game["homeColors"]["alt"], 1)
     
     # Home Score
-    matrixportal.set_text(awayScore, 3)
+    matrixportal.set_text(homeScore, 3)
     matrixportal.set_text_color(game["homeColors"]["primary"], 3)
 
 # --- Main --- #
