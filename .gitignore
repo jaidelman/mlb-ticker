@@ -1,3 +1,4 @@
 /.vscode
 /package
 *.zip
+/__pycache__
