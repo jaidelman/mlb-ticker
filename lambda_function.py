@@ -1,6 +1,6 @@
 import json
 import requests
-# import teamColors
+import teamColors
 # import time
 # import dateutil.parser
 # from datetime import date
@@ -29,6 +29,8 @@ def lambda_handler(event, context):
 
         awayAbbr = stats['gameData']['teams']['away']['abbreviation']
         homeAbbr = stats['gameData']['teams']['home']['abbreviation']
+        awayColors = teamColors.colors[awayAbbr]
+        homeColors = teamColors.colors[homeAbbr]
 
         if gameStatus == "Live" or gameStatus == "Final":
             awayScore = stats['liveData']['linescore']['teams']['away']['runs']
@@ -44,8 +46,8 @@ def lambda_handler(event, context):
                 'homeScore': homeScore,
                 'inning': inning,
                 'isTopInning': isTopInning,
-                # 'awayColors': awayColors,
-                # 'homeColors': homeColors
+                'awayColors': awayColors,
+                'homeColors': homeColors
             }
         else:
             # startTime = dateutil.parser.parse(game['profile']['dateTimeEt'])
@@ -53,15 +55,11 @@ def lambda_handler(event, context):
             obj = {
                 'awayAbbr': awayAbbr,
                 'homeAbbr': homeAbbr,
-                # 'awayColors': awayColors,
-                # 'homeColors': homeColors,
+                'awayColors': awayColors,
+                'homeColors': homeColors,
                 # 'startTime': startTime
             }
 
-        # awayColors = teamColors.colors[awayAbbr]
-        # homeColors = teamColors.colors[homeAbbr]
-
-        print(obj)
         games.append(obj)
 
     payload['payload'] = games
