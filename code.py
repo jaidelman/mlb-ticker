@@ -43,6 +43,8 @@ TEAM_TWO_SHADOW_X = TEAM_TWO_X + 1
 
 TOP_ROW_HEIGHT = int(
     matrixportal.graphics.display.height * 0.25) - 5
+MIDDLE_ROW_HEIGHT = int(
+    matrixportal.graphics.display.height * 0.5) - 5
 BOTTOM_ROW_HEIGHT = int(
     matrixportal.graphics.display.height * 0.75) - 4
 
@@ -96,6 +98,41 @@ matrixportal.add_text(
     text_position=(TEAM_TWO_X, TOP_ROW_HEIGHT)
 )
 
+# Inning
+matrixportal.add_text(
+    text_font=FONT,
+    text_position=(TEAM_ONE_X, TOP_ROW_HEIGHT)
+)
+matrixportal.set_text_color("0xFFFFFF", 8)
+
+# Outs
+matrixportal.add_text(
+    text_font=FONT,
+    text_position=(TEAM_ONE_X, BOTTOM_ROW_HEIGHT)
+)
+matrixportal.set_text_color("0xFF0000", 9)
+
+# First
+matrixportal.add_text(
+    text_font=FONT,
+    text_position=(TEAM_TWO_X, MIDDLE_ROW_HEIGHT + 7)
+)
+matrixportal.set_text_color("0xFFC72C", 10)
+
+# Second
+matrixportal.add_text(
+    text_font=FONT,
+    text_position=(TEAM_TWO_X + 5, MIDDLE_ROW_HEIGHT + 1)
+)
+matrixportal.set_text_color("0xFFC72C", 11)
+
+# Third
+matrixportal.add_text(
+    text_font=FONT,
+    text_position=(TEAM_TWO_X + 10, MIDDLE_ROW_HEIGHT + 7)
+)
+matrixportal.set_text_color("0xFFC72C", 12)
+
 # --- Functions --- #
 
 # Gets the scores from our API and stores them in a data object
@@ -106,9 +143,44 @@ def getScores():
     data = json.loads(response)
 
     return data
+
+def showInning(game):
+    matrixportal.set_text("", 0)
+    matrixportal.set_text("", 1)
+    matrixportal.set_text("", 2)
+    matrixportal.set_text("", 3)
+    matrixportal.set_text("", 4)
+    matrixportal.set_text("", 5)
+    matrixportal.set_text("", 6)
+    matrixportal.set_text("", 7)
     
-# Sets the scores on the board, returns if the game has started or not
-def setScore(game):
+    if "inning" in game:
+        inning = ("^" + str(game["inning"])) if game["isTopInning"] else ("v" + str(game["inning"]))
+        matrixportal.set_text(inning, 8)
+        
+        outs = ""
+        for i in range (0, game["outs"]):
+            outs += "X"
+        
+        matrixportal.set_text(outs, 9)
+        
+        first = "x" if game["first"] else "o"
+        second = "x" if game["second"] else "o"
+        third = "x" if game["third"] else "o"
+        
+        matrixportal.set_text(first, 10)
+        matrixportal.set_text(second, 11)
+        matrixportal.set_text(third, 12)
+    
+    
+# Sets the scores on the board
+def showScore(game):
+    
+    matrixportal.set_text("", 8)
+    matrixportal.set_text("", 9)
+    matrixportal.set_text("", 10)
+    matrixportal.set_text("", 11)
+    matrixportal.set_text("", 12)
     
     # Away Name Shadow
     matrixportal.set_text(game["awayAbbr"], 4)
@@ -169,13 +241,19 @@ while True:
     
     # Display our information
     if data is not None:
-        index = int(i/2) # We want to show the score/time twice before switching to the next game
+        index = int(i) # We want to show the score/time twice before switching to the next game
         game = data['body']['payload'][index]
-        setScore(game)
-        time.sleep(2)
+        showScore(game)
+        time.sleep(3)
+        
+        showInning(game)
+        time.sleep(3)
+        
+        showScore(game)
+        time.sleep(3)
         
         # Increment index
-        if i < len(data['body']['payload'])*2 - 1:
+        if i < len(data['body']['payload']) - 1:
             i += 1
         else:
             i = 0
