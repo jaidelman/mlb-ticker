@@ -41,9 +41,9 @@ def lambda_handler(event, context):
             isTopInning = stats['liveData']['linescore']['isTopInning']
             outs = stats['liveData']['linescore']['outs']
             
-            first = True if 'first' in stats['liveData']['linescore'] else False
-            second = True if 'second' in stats['liveData']['linescore'] else False
-            third = True if 'third' in stats['liveData']['linescore'] else False
+            first = True if 'first' in stats['liveData']['linescore']['offense'] else False
+            second = True if 'second' in stats['liveData']['linescore']['offense'] else False
+            third = True if 'third' in stats['liveData']['linescore']['offense'] else False
 
             obj = {
                 'awayAbbr': awayAbbr,
@@ -78,3 +78,5 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': payload
     }
+
+lambda_handler(None, None)
