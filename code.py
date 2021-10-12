@@ -112,7 +112,7 @@ matrixportal.add_text(
 )
 matrixportal.set_text_color("0xFF0000", 9)
 
-# First
+# Third
 matrixportal.add_text(
     text_font=FONT,
     text_position=(RIGHT_X, MIDDLE_ROW_HEIGHT + 6)
@@ -126,7 +126,7 @@ matrixportal.add_text(
 )
 matrixportal.set_text_color("0xFFC72C", 11)
 
-# Third
+# First
 matrixportal.add_text(
     text_font=FONT,
     text_position=(RIGHT_X + 10, MIDDLE_ROW_HEIGHT + 6)
@@ -150,7 +150,7 @@ def getScores():
     data = json.loads(response)
 
     return data
-    
+
 def clearScores():
     matrixportal.set_text("", 0)
     matrixportal.set_text("", 1)
@@ -172,41 +172,41 @@ def showInning(game):
         for i in range (0, game["outs"]):
             outs += "X"
         matrixportal.set_text(outs, 9)
-        
+
         battingColor = game["awayColors"]["primary"] if game["isTopInning"] else game["homeColors"]["alt"]
-        
+
         # Set colour and status of first base
         if game["first"]:
-            matrixportal.set_text_color(battingColor, 10)
-            first = "x" 
+            matrixportal.set_text_color(battingColor, 12)
+            first = "x"
         else:
-            matrixportal.set_text_color("0xFFC72C", 10)
+            matrixportal.set_text_color("0xFFC72C", 12)
             first = "-"
-        
+
         # Set colour and status of second base
         if game["second"]:
             matrixportal.set_text_color(battingColor, 11)
-            second = "x" 
+            second = "x"
         else:
             matrixportal.set_text_color("0xFFC72C", 11)
             second = "-"
-            
+
         # Set colour and status of third base
         if game["third"]:
-            matrixportal.set_text_color(battingColor, 12)
-            third = "x" 
+            matrixportal.set_text_color(battingColor, 10)
+            third = "x"
         else:
-            matrixportal.set_text_color("0xFFC72C", 12)
+            matrixportal.set_text_color("0xFFC72C", 10)
             third = "-"
 
-        matrixportal.set_text(first, 10)
+        matrixportal.set_text(first, 12)
         matrixportal.set_text(second, 11)
-        matrixportal.set_text(third, 12)
+        matrixportal.set_text(third, 10)
 
 
 # Sets the scores on the board
 def showScore(game):
-    
+
     matrixportal.set_text("", 8)
     matrixportal.set_text("", 9)
     matrixportal.set_text("", 10)
@@ -253,12 +253,12 @@ def showScore(game):
     # Home Score
     matrixportal.set_text(homeScore, 3)
     matrixportal.set_text_color(game["homeColors"]["primary"], 3)
-    
+
     return gameStarted
-    
+
 def showStartTime(game):
     clearScores()
-    
+
     matrixportal.set_text_color(game["homeColors"]["primary"], 13)
     matrixportal.set_text(game["startTime"], 13)
     matrixportal.scroll_text(SCROLL_SPEED)
@@ -285,10 +285,10 @@ while True:
     if data is not None:
         index = i # We want to show the score/time twice before switching to the next game
         game = data['body']['payload'][index]
-        
+
         gameStarted = showScore(game)
         time.sleep(10)
-        
+
         if gameStarted:
             showInning(game)
             time.sleep(7)
