@@ -103,7 +103,6 @@ matrixportal.add_text(
     text_font=FONT,
     text_position=(LEFT_X, TOP_ROW_HEIGHT)
 )
-matrixportal.set_text_color("0xFFFFFF", 8)
 
 # Outs
 matrixportal.add_text(
@@ -165,39 +164,23 @@ def showInning(game):
     clearScores()
 
     if "inning" in game:
+        
+        # Set Inning
+        battingColor = game["awayColors"]["primary"] if game["isTopInning"] else game["homeColors"]["primary"]
         inning = ("^" + str(game["inning"])) if game["isTopInning"] else ("v" + str(game["inning"]))
         matrixportal.set_text(inning, 8)
+        matrixportal.set_text_color(battingColor, 8)
 
+        # Set number of outs
         outs = ""
         for i in range (0, game["outs"]):
             outs += "X"
         matrixportal.set_text(outs, 9)
 
-        battingColor = game["awayColors"]["primary"] if game["isTopInning"] else game["homeColors"]["primary"]
-
-        # Set colour and status of first base
-        if game["first"]:
-            matrixportal.set_text_color(battingColor, 12)
-            first = "x"
-        else:
-            matrixportal.set_text_color("0xFFC72C", 12)
-            first = "-"
-
-        # Set colour and status of second base
-        if game["second"]:
-            matrixportal.set_text_color(battingColor, 11)
-            second = "x"
-        else:
-            matrixportal.set_text_color("0xFFC72C", 11)
-            second = "-"
-
-        # Set colour and status of third base
-        if game["third"]:
-            matrixportal.set_text_color(battingColor, 10)
-            third = "x"
-        else:
-            matrixportal.set_text_color("0xFFC72C", 10)
-            third = "-"
+        # Set baserunners
+        first = "X" if game["first"] else "-"
+        second = "X" if game["second"] else "-"
+        third = "X" if game["third"] else "-"
 
         matrixportal.set_text(first, 12)
         matrixportal.set_text(second, 11)
@@ -265,6 +248,7 @@ def showStartTime(game):
 
 # --- Main --- #
 
+GAME_STARTED = False
 REFRESH_RATE_DURING_GAMES = 150 # If games are going on, update scores every 2.5 minutes
 REFRESH_RATE_OUTSIDE_GAMES = 900 # If there are no games on, wait 15 minutes before checking again
 data = None # Store the live data
@@ -277,7 +261,7 @@ while True:
     # If it's the first loop or it's been longer than our refresh rate, get live scores
     if (not refresh_time) or ((time.monotonic() - refresh_time) > refresh_rate):
         data = getScores()
-        refresh_rate = REFRESH_RATE_DURING_GAMES # Update refresh rate (in case all games ended)
+        refresh_rate = REFRESH_RATE_DURING_GAMES if GAME_STARTED else REFRESH_RATE_OUTSIDE_GAMES # Update refresh rate (in case all games ended)
         refresh_time = time.monotonic()
         print("Refreshing in {:.0f} minutes".format(refresh_rate/60))
 
@@ -290,6 +274,7 @@ while True:
         time.sleep(10)
 
         if gameStarted:
+            GAME_STARTED = True
             showInning(game)
             time.sleep(7)
         else:
