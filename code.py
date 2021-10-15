@@ -173,7 +173,7 @@ def showInning(game):
             outs += "X"
         matrixportal.set_text(outs, 9)
 
-        battingColor = game["awayColors"]["primary"] if game["isTopInning"] else game["homeColors"]["alt"]
+        battingColor = game["awayColors"]["primary"] if game["isTopInning"] else game["homeColors"]["primary"]
 
         # Set colour and status of first base
         if game["first"]:
