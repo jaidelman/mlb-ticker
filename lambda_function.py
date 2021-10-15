@@ -78,5 +78,3 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': payload
     }
-
-lambda_handler(None, None)
