@@ -39,8 +39,8 @@ colors = {
         "alt": NAVY_BLUE
     },
     "CLE": {
-        "primary": NAVY_BLUE,
-        "alt": RED
+        "primary": RED,
+        "alt": NAVY_BLUE
     },
     "CIN": {
         "primary": RED,
@@ -59,8 +59,8 @@ colors = {
         "alt": RED
     },
     "DET": {
-        "primary": RED,
-        "alt": DARK_BLUE
+        "primary": DARK_BLUE,
+        "alt": WHITE
     }, 
     "HOU": {
         "primary": ORANGE,
@@ -76,7 +76,7 @@ colors = {
     },
     "LAD": {
         "primary": LIGHT_BLUE,
-        "alt": RED
+        "alt": WHITE
     },
     "MIN": {
         "primary": RED,
@@ -116,7 +116,7 @@ colors = {
     },
     "SD": {
         "primary": SAND,
-        "alt": NAVY_BLUE
+        "alt": GOLD
     },
     "SF": {
         "primary": ORANGE,
