@@ -144,7 +144,9 @@ matrixportal.add_text(
 # Gets the scores from our API and stores them in a data object
 def getScores():
     print("Getting scores")
+    print(gc.mem_free())
     gc.collect()
+    print(gc.mem_free())
     response = matrixportal.fetch()
     data = json.loads(response)
 
@@ -164,7 +166,7 @@ def showInning(game):
     clearScores()
 
     if "inning" in game:
-        
+
         # Set Inning
         battingColor = game["awayColors"]["primary"] if game["isTopInning"] else game["homeColors"]["primary"]
         inning = ("^" + str(game["inning"])) if game["isTopInning"] else ("v" + str(game["inning"]))
@@ -238,6 +240,14 @@ def showScore(game):
     matrixportal.set_text_color(game["homeColors"]["primary"], 3)
 
     return gameStarted
+    
+def showFinal(game):
+    clearScores()
+    
+    winnerColors = game["homeColors"]["primary"] if game['homeScore'] > game['awayScore'] else game["awayColors"]["primary"]
+    matrixportal.set_text_color(winnerColors, 13)
+    matrixportal.set_text("FINAL", 13)
+    matrixportal.scroll_text(SCROLL_SPEED)
 
 def showStartTime(game):
     clearScores()
@@ -248,7 +258,7 @@ def showStartTime(game):
 
 # --- Main --- #
 
-GAME_STARTED = False
+GAME_STARTED = True
 REFRESH_RATE_DURING_GAMES = 150 # If games are going on, update scores every 2.5 minutes
 REFRESH_RATE_OUTSIDE_GAMES = 900 # If there are no games on, wait 15 minutes before checking again
 data = None # Store the live data
@@ -260,6 +270,7 @@ while True:
 
     # If it's the first loop or it's been longer than our refresh rate, get live scores
     if (not refresh_time) or ((time.monotonic() - refresh_time) > refresh_rate):
+        del data
         data = getScores()
         refresh_rate = REFRESH_RATE_DURING_GAMES if GAME_STARTED else REFRESH_RATE_OUTSIDE_GAMES # Update refresh rate (in case all games ended)
         refresh_time = time.monotonic()
@@ -275,8 +286,12 @@ while True:
 
         if gameStarted:
             GAME_STARTED = True
-            showInning(game)
-            time.sleep(7)
+            
+            if not game['isFinal']:
+                showInning(game)
+                time.sleep(7)
+            else:
+                showFinal(game)
         else:
             showStartTime(game)
 

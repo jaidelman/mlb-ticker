@@ -40,6 +40,7 @@ def lambda_handler(event, context):
             inning = stats['liveData']['linescore']['currentInning']
             isTopInning = stats['liveData']['linescore']['isTopInning']
             outs = stats['liveData']['linescore']['outs']
+            isFinal = stats['gameData']['status']['statusCode'] == "F"
             
             first = True if 'first' in stats['liveData']['linescore']['offense'] else False
             second = True if 'second' in stats['liveData']['linescore']['offense'] else False
@@ -56,6 +57,7 @@ def lambda_handler(event, context):
                 'first': first,
                 'second': second,
                 'third': third,
+                'isFinal': isFinal,
                 'awayColors': awayColors,
                 'homeColors': homeColors
             }
