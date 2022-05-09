@@ -16,5 +16,5 @@ The code is written in Python using Adafruit and CircuitPython's libraries to co
 This file contains a bunch of hex color codes. Each team is assigned a primary color and alternate color which is used to display their abbreviation and score. The LED Matrix can not support certain shades, some colors were being displayed incorrectly (some reds looked very pink) and some colors aren't able to be displayed at all (gray, black, etc...). Because of this I created a list of color's hex codes that I tested on the board to make sure they look good and used those to make up the team colors.
 
 # Example
-
+https://user-images.githubusercontent.com/32146689/137643542-bd93167e-6e26-427c-b6b9-d9f3a67ad3c5.mp4
 
