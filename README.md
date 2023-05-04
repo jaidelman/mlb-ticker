@@ -3,6 +3,22 @@ The purpose of this project is to display live MLB scores on an Adafruit 16x32 L
 
 https://user-images.githubusercontent.com/32146689/137643542-bd93167e-6e26-427c-b6b9-d9f3a67ad3c5.mp4
 
+# How To Read The Scoreboard
+When the scoreboard is displaying it's game state it shows the following:
+
+```
+^#     2
+XXX  3   1
+```
+
+^#: This represents which inning the game is in. It will show '^' for the top of the inning, and 'v' for the bottom. When the scores are displayed, the home team is always on the bottom (The home team bats in the top of the inning, and the away team bats in the bottom of the inning).
+
+X: This section represents the number of outs, with one 'X' for each out so far in the half inning
+
+1,2,3: Each of these positions represents a base; 1st, 2nd, and 3rd. If there is a '_' in that position, then there is nobody on that base, while if there is an 'X' in that position there is a runner on that base.
+
+
+
 # Hardware
 I used [Adafruit's 16x32 LED Matrix](https://www.adafruit.com/product/420), their [MatrixPortal](https://www.adafruit.com/product/4745) and a USB C power supply
 
