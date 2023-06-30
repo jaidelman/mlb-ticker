@@ -50,89 +50,103 @@ BOTTOM_ROW_HEIGHT = int(
 
 # --- Text Fields --- #
 
-# Team One Score Shadow
+# Away Score Shadow
+AWAY_SCORE_SHADOW = 0
 matrixportal.add_text(
     text_font=FONT,
     text_position=(RIGHT_SHADOW_X + SCORE_X_SHIFT, TOP_ROW_HEIGHT)
 )
 
-# Team Two Score Shadow
+# Home Score Shadow
+HOME_SCORE_SHADOW = 1
 matrixportal.add_text(
     text_font=FONT,
     text_position=(RIGHT_SHADOW_X + SCORE_X_SHIFT, BOTTOM_ROW_HEIGHT)
 )
 
-# Team One Score
+# Away Score
+AWAY_SCORE = 2
 matrixportal.add_text(
     text_font=FONT,
     text_position=(RIGHT_X + SCORE_X_SHIFT, TOP_ROW_HEIGHT)
 )
 
-# Team Two Score
+# Home Score
+HOME_SCORE = 3
 matrixportal.add_text(
     text_font=FONT,
     text_position=(RIGHT_X + SCORE_X_SHIFT, BOTTOM_ROW_HEIGHT)
 )
 
-# Team One Name Shadow
+# Away Name Shadow
+AWAY_NAME_SHADOW = 4
 matrixportal.add_text(
     text_font=FONT,
     text_position=(LEFT_SHADOW_X, TOP_ROW_HEIGHT)
 )
 
-# Team Two Name Shadow
+# Home Name Shadow
+HOME_NAME_SHADOW = 5
 matrixportal.add_text(
     text_font=FONT,
     text_position=(LEFT_SHADOW_X, BOTTOM_ROW_HEIGHT)
 )
 
-# Team One Name
+# Away Name
+AWAY_NAME = 6
 matrixportal.add_text(
     text_font=FONT,
     text_position=(LEFT_X, TOP_ROW_HEIGHT)
 )
 
-# Team Two Name
+# Home Name
+HOME_NAME = 7
 matrixportal.add_text(
     text_font=FONT,
     text_position=(LEFT_X, BOTTOM_ROW_HEIGHT)
 )
 
 # Inning
+INNING = 8
 matrixportal.add_text(
     text_font=FONT,
     text_position=(LEFT_X, TOP_ROW_HEIGHT)
 )
 
 # Outs
+OUTS = 9
 matrixportal.add_text(
     text_font=FONT,
     text_position=(LEFT_X, BOTTOM_ROW_HEIGHT)
 )
-matrixportal.set_text_color("0xFF0000", 9)
+matrixportal.set_text_color("0xFF0000", OUTS)
 
-# Third
+# Third base
+THIRD_BASE = 10
 matrixportal.add_text(
     text_font=FONT,
     text_position=(RIGHT_X, MIDDLE_ROW_HEIGHT + 6)
 )
-matrixportal.set_text_color("0xFFC72C", 10)
+matrixportal.set_text_color("0xFFC72C", THIRD_BASE)
 
-# Second
+# Second base
+SECOND_BASE = 11
 matrixportal.add_text(
     text_font=FONT,
     text_position=(RIGHT_X + 5, MIDDLE_ROW_HEIGHT)
 )
-matrixportal.set_text_color("0xFFC72C", 11)
+matrixportal.set_text_color("0xFFC72C", SECOND_BASE)
 
-# First
+# First base
+FIRST_BASE = 12
 matrixportal.add_text(
     text_font=FONT,
     text_position=(RIGHT_X + 10, MIDDLE_ROW_HEIGHT + 6)
 )
-matrixportal.set_text_color("0xFFC72C", 12)
+matrixportal.set_text_color("0xFFC72C", FIRST_BASE)
 
-# StartTime
+# Start time
+START_TIME = 13
 matrixportal.add_text(
     text_font=FONT,
     text_position=(RIGHT_X, MIDDLE_ROW_HEIGHT + 4),
@@ -153,14 +167,15 @@ def getScores():
     return data
 
 def clearScores():
-    matrixportal.set_text("", 0)
-    matrixportal.set_text("", 1)
-    matrixportal.set_text("", 2)
-    matrixportal.set_text("", 3)
-    matrixportal.set_text("", 4)
-    matrixportal.set_text("", 5)
-    matrixportal.set_text("", 6)
-    matrixportal.set_text("", 7)
+    # Clear the scores off the board
+    matrixportal.set_text("", AWAY_SCORE_SHADOW)
+    matrixportal.set_text("", HOME_SCORE_SHADOW)
+    matrixportal.set_text("", AWAY_SCORE)
+    matrixportal.set_text("", HOME_SCORE)
+    matrixportal.set_text("", AWAY_NAME)
+    matrixportal.set_text("", HOME_NAME)
+    matrixportal.set_text("", AWAY_NAME_SHADOW)
+    matrixportal.set_text("", HOME_NAME_SHADOW)
 
 def showInning(game):
     clearScores()
@@ -170,49 +185,49 @@ def showInning(game):
         # Set Inning
         battingColor = game["awayColors"]["primary"] if game["isTopInning"] else game["homeColors"]["primary"]
         inning = ("^" + str(game["inning"])) if game["isTopInning"] else ("v" + str(game["inning"]))
-        matrixportal.set_text(inning, 8)
-        matrixportal.set_text_color(battingColor, 8)
+        matrixportal.set_text(inning, INNING)
+        matrixportal.set_text_color(battingColor, INNING)
 
         # Set number of outs
         outs = ""
         for i in range (0, game["outs"]):
             outs += "X"
-        matrixportal.set_text(outs, 9)
+        matrixportal.set_text(outs, OUTS)
 
         # Set baserunners
         first = "X" if game["first"] else "-"
         second = "X" if game["second"] else "-"
         third = "X" if game["third"] else "-"
 
-        matrixportal.set_text(first, 12)
-        matrixportal.set_text(second, 11)
-        matrixportal.set_text(third, 10)
+        matrixportal.set_text(first, FIRST_BASE)
+        matrixportal.set_text(second, SECOND_BASE)
+        matrixportal.set_text(third, THIRD_BASE)
 
 
 # Sets the scores on the board
 def showScore(game):
-
-    matrixportal.set_text("", 8)
-    matrixportal.set_text("", 9)
-    matrixportal.set_text("", 10)
-    matrixportal.set_text("", 11)
-    matrixportal.set_text("", 12)
+    # Clear the board
+    matrixportal.set_text("", INNING)
+    matrixportal.set_text("", OUTS)
+    matrixportal.set_text("", THIRD_BASE)
+    matrixportal.set_text("", SECOND_BASE)
+    matrixportal.set_text("", FIRST_BASE)
 
     # Away Name Shadow
-    matrixportal.set_text(game["awayAbbr"], 4)
-    matrixportal.set_text_color(game["awayColors"]["alt"], 4)
+    matrixportal.set_text(game["awayAbbr"], AWAY_NAME_SHADOW)
+    matrixportal.set_text_color(game["awayColors"]["alt"], AWAY_NAME_SHADOW)
 
     # Away Name
-    matrixportal.set_text(game["awayAbbr"], 6)
-    matrixportal.set_text_color(game["awayColors"]["primary"], 6)
+    matrixportal.set_text(game["awayAbbr"], AWAY_NAME)
+    matrixportal.set_text_color(game["awayColors"]["primary"], AWAY_NAME)
 
     # Home Name Shadow
-    matrixportal.set_text(game["homeAbbr"], 5)
-    matrixportal.set_text_color(game["homeColors"]["alt"], 5)
+    matrixportal.set_text(game["homeAbbr"], HOME_NAME_SHADOW)
+    matrixportal.set_text_color(game["homeColors"]["alt"], HOME_NAME_SHADOW)
 
     # Home Name
-    matrixportal.set_text(game["homeAbbr"], 7)
-    matrixportal.set_text_color(game["homeColors"]["primary"], 7)
+    matrixportal.set_text(game["homeAbbr"], HOME_NAME)
+    matrixportal.set_text_color(game["homeColors"]["primary"], HOME_NAME)
 
     if "awayScore" in game:
         gameStarted = True
@@ -224,20 +239,20 @@ def showScore(game):
         homeScore = 0
 
     # Away Score Shadow
-    matrixportal.set_text(awayScore, 0)
-    matrixportal.set_text_color(game["awayColors"]["alt"], 0)
+    matrixportal.set_text(awayScore, AWAY_SCORE_SHADOW)
+    matrixportal.set_text_color(game["awayColors"]["alt"], AWAY_SCORE_SHADOW)
 
     # Away Score
-    matrixportal.set_text(awayScore, 2)
-    matrixportal.set_text_color(game["awayColors"]["primary"], 2)
+    matrixportal.set_text(awayScore, AWAY_SCORE)
+    matrixportal.set_text_color(game["awayColors"]["primary"], AWAY_SCORE)
 
     # Home Score Shadow
-    matrixportal.set_text(homeScore, 1)
-    matrixportal.set_text_color(game["homeColors"]["alt"], 1)
+    matrixportal.set_text(homeScore, HOME_SCORE_SHADOW)
+    matrixportal.set_text_color(game["homeColors"]["alt"], HOME_SCORE_SHADOW)
 
     # Home Score
-    matrixportal.set_text(homeScore, 3)
-    matrixportal.set_text_color(game["homeColors"]["primary"], 3)
+    matrixportal.set_text(homeScore, HOME_SCORE)
+    matrixportal.set_text_color(game["homeColors"]["primary"], HOME_SCORE)
 
     return gameStarted
     
@@ -245,15 +260,15 @@ def showFinal(game):
     clearScores()
     
     winnerColors = game["homeColors"]["primary"] if game['homeScore'] > game['awayScore'] else game["awayColors"]["primary"]
-    matrixportal.set_text_color(winnerColors, 13)
-    matrixportal.set_text("FINAL", 13)
+    matrixportal.set_text_color(winnerColors, START_TIME)
+    matrixportal.set_text("FINAL", START_TIME)
     matrixportal.scroll_text(SCROLL_SPEED)
 
 def showStartTime(game):
     clearScores()
 
-    matrixportal.set_text_color(game["homeColors"]["primary"], 13)
-    matrixportal.set_text(game["startTime"], 13)
+    matrixportal.set_text_color(game["homeColors"]["primary"], START_TIME)
+    matrixportal.set_text(game["startTime"], START_TIME)
     matrixportal.scroll_text(SCROLL_SPEED)
 
 # --- Main --- #
